@@ -33,6 +33,7 @@ exports.createNote = catchAsync(async (req, res, next) => {
             }
         })
 })
+
 exports.getNotesOFaUser = catchAsync(async (req, res, next) => {
         const notes = await Notes.find({ user: req.user._id });
         if(!notes){
@@ -49,7 +50,7 @@ exports.getNotesOFaUser = catchAsync(async (req, res, next) => {
 exports.getNoteById = catchAsync(async (req, res, next) => {
         const note = await Notes.findById(req.params.id)
         if(!note){
-            return next(new AppError("No note found with this id",404))
+            return next(new AppError("No note found with this ID",404))
         }
         res.status(200).json({
             status: "success",

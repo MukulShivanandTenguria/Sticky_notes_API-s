@@ -26,7 +26,8 @@ app.use((req, res, next) => {
 
     res.cookie('jwtsds', "token", cookieOptions);
     // res.cookie("coocoo",)
-    console.log("Hello from the middleware");
+    console.log("Hello from the middleware",req.cookies);
+    
     next();
 
 })
@@ -42,6 +43,7 @@ app.all("*",(req,res,next)=>{
     // err.status = 'fail';
     // err.statusCode = 404  
     // next(err)  
+    
     next(new AppError(`Can't find ${req.originalUrl} on this server`,404))  
 })
 app.use(globalErrorHandler)
