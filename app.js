@@ -12,6 +12,8 @@ const AppError = require('./utils/appError');
 app.use(express.json())
 app.use(cookieParser());
 app.use(cors());
+app.use(express.static('public/img/users'));
+
 // if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 // }
@@ -26,7 +28,7 @@ app.use((req, res, next) => {
 
     res.cookie('jwtsds', "token", cookieOptions);
     // res.cookie("coocoo",)
-    console.log("Hello from the middleware",req.cookies);
+    console.log("Hello from the middleware");
     
     next();
 

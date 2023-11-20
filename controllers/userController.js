@@ -1,4 +1,30 @@
 const User = require("../Models/userModal")
+const AppError = require("../utils/appError")
+const multer  = require('multer');
+
+
+const multerStorage = multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,'./public/img/users');
+    },
+    filename:(req,file,cd)=>{
+        const ext= file.mimetype.split('/')[1]
+        cd(null,`user-${req.user.id}-${Date.now()}.${ext}`)
+    }
+})
+const multerFilter = (req,file,cb)=>{
+    if(file.mimetype.startsWith("image")){
+        cb(null,true)
+    }else{
+        cb(new AppError("Not an image! Please upload only image",400),false)
+    }
+}
+const upload = multer({
+    storage:multerStorage,
+    fileFilter:multerFilter
+})
+
+exports.uploadUserPhoto = upload.single("photo")
 
 exports.getAllUser = async(req,res,next) => {
     const uses = await User.find()
@@ -14,5 +40,15 @@ exports.getAllUser = async(req,res,next) => {
     res.status(200).json({
         status:"success",
         data:{uses}
+    })
+}
+
+exports.updateProfile = async(req,res) => {
+    console.log(req.body);
+    console.log(req.file);
+
+    res.status(200).json({
+        status:"success",
+        url:`http://localhost:3000/${req.file.filename}`
     })
 }
